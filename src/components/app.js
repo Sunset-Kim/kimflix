@@ -1,11 +1,12 @@
 import Router from "components/router";
-import Header from "components/header/header"
+import GlobalStyle from "./golbal-styles";
+
 
 function App() {
   return (
     <>
-      <Header></Header>
-      <Router></Router>
+      <Router />
+      <GlobalStyle />
     </>
   );
 }

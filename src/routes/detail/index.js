@@ -1,0 +1,1 @@
+import DetailContainer from './detail_container';

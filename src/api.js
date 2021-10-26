@@ -5,7 +5,8 @@ const api = axios.create({
   params: {
     api_key: process.env.REACT_APP_MOVIE_KEY,
     language: 'ko',
-    region: 'KR'
+    region: 'KR',
+    // include_image_language: 'ko',
   }
 })
 
@@ -18,7 +19,8 @@ export const moviesApi = {
     params: {
       append_to_response: 'videos'
     }
-  })
+  }),
+  movieSimilar: (id) => api.get(`movie/${id}/similar`)
 }
 
 export const tvApi = {
@@ -29,7 +31,8 @@ export const tvApi = {
     params: {
       append_to_response: 'videos'
     }
-  })
+  }),
+  tvSimilar: (id) => api.get(`tv/${id}/similar`)
 }
 
 export const searchApi = {

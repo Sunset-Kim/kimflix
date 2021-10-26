@@ -22,6 +22,16 @@ const GlobalStyle = createGlobalStyle`
     padding-top: 60px;
   }
 
+  button {
+    border: none;
+    outline: none;
+  }
+
+  input {
+    border: none;
+    outline: none;
+  }
+
 `;
 
 export default GlobalStyle;

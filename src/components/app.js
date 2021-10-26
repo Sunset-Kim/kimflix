@@ -1,5 +1,5 @@
 import Router from "components/router";
-import GlobalStyle from "./golbal-styles";
+import GlobalStyle from "./global-styles";
 
 
 function App() {

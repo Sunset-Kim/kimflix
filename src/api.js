@@ -32,10 +32,16 @@ export const tvApi = {
   })
 }
 
-export const search = {
+export const searchApi = {
+  multi: (query) => api.get('search/multi', {
+    params: {
+      query
+    }
+  }),
+
   keyword: (query) => api.get('search/keyword', {
     params: {
-      query: encodeURIComponent(query)
+      query
     }
   })
 }

@@ -11,6 +11,7 @@ export default class extends React.Component {
   }
 
   onSearch = (query) => {
+
     this.setState({ searchTerm: query });
   }
   getResult = () => searchApi.multi(this.state.searchTerm);

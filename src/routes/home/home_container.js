@@ -1,6 +1,6 @@
 import { moviesApi } from "api";
 import React from "react";
-import HomePresenter from "./home_presenter";
+import HomePresenter from "./home_presenter.js";
 
 export default class extends React.Component {
 

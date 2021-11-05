@@ -10,9 +10,6 @@ export default class extends React.Component {
       location: { pathname }
     } = props;
 
-
-
-
     this.state = {
       result: null,
       loading: true,
@@ -21,11 +18,10 @@ export default class extends React.Component {
     }
   }
 
-
-
-
   async componentDidMount() {
+    
     const { isMovie } = this.state;
+
     const {
       match: { params: { id } },
       history: { push },
@@ -34,8 +30,6 @@ export default class extends React.Component {
 
     const parsedId = parseInt(id);
     console.log(this.props)
-
-
 
     // id가 숫자가 아니면 home으로 보내기
     if (isNaN(parsedId)) {
@@ -49,8 +43,7 @@ export default class extends React.Component {
       } else {
         ({ data: result } = await tvApi.tvDetail(parsedId));
       }
-
-      console.log(result)
+      this.setState({ result })
     }
     catch {
       this.setState({ error: "결과가 존재하지 않습니다" })
@@ -58,8 +51,6 @@ export default class extends React.Component {
     finally {
       this.setState({ loading: false })
     }
-
-
 
   }
 

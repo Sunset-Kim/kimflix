@@ -10,16 +10,24 @@ export default class extends React.Component {
     loading: false,
   }
 
-  onSearch = (query) => {
-
-    this.setState({ searchTerm: query });
+  updateTerm = event => {
+    const { target: { value } } = event
+    this.setState({ searchTerm: value })
   }
+
+  onSearch = event => {
+    event.preventDefault();
+    const { searchTerm } = this.state;
+    if (searchTerm !== '') {
+      this.searchByTerm()
+    }
+  }
+
   getResult = () => searchApi.multi(this.state.searchTerm);
 
   searchByTerm = async () => {
     try {
       this.setState({ loading: true });
-
       const { data: { results: currentResult } } = await this.getResult()
       this.setState({ currentResult })
     }
@@ -30,16 +38,6 @@ export default class extends React.Component {
       this.setState({ loading: false })
     }
   }
-
-  componentDidUpdate(prevProps, prevState) {
-
-    // search term이 바뀔때만 검색
-    if (this.state.searchTerm !== prevState.searchTerm) {
-      this.searchByTerm();
-    }
-
-  }
-
 
 
   render() {
@@ -52,6 +50,7 @@ export default class extends React.Component {
         error={error}
         loading={loading}
         onSearch={this.onSearch}
+        updateTerm={this.updateTerm}
       />
     )
   }

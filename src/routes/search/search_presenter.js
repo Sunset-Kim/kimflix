@@ -1,6 +1,11 @@
 import React, { createRef } from "react";
 import PropType from "prop-types"
 import styled from "styled-components";
+import Loading from "components/loading";
+import Section from "components/section";
+import Message from "components/message";
+import Poster from "components/poster";
+import { Helmet } from "react-helmet";
 
 const SearchBar = styled.form`
   position: relative;
@@ -20,6 +25,9 @@ const SearchBar = styled.form`
   }
 `
 
+const Container = styled.div`
+  padding: 10px 10px;
+`
 
 
 const SearchPresenter = ({
@@ -27,26 +35,86 @@ const SearchPresenter = ({
   searchTerm,
   error,
   loading,
-  onSearch }) => {
+  onSearch,
+  updateTerm
+}) => {
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const checkMediaType = (data) => {
+    switch (data.media_type) {
+      case 'movie':
+        return (
+          <Poster
+            key={data.id}
+            id={data.id}
+            imageUrl={data.poster_path}
+            title={data.title}
+            year={data.release_date}
+            rating={data.vote_average}
+            isMovie={true}
+          />
+        )
 
-    if (query.current.value) {
-      onSearch(query.current.value);
-      query.current.value = '';
+        break;
+
+      case 'tv':
+        return (
+          <Poster
+            key={data.id}
+            id={data.id}
+            imageUrl={data.poster_path}
+            title={data.name}
+            year={data.release_date}
+            rating={data.vote_average}
+            isMovie={false}
+          />
+        );
+        break;
+
+      case 'person':
+        return (
+          <Poster
+            key={data.id}
+            id={data.id}
+            imageUrl={data.profile_path}
+            title={data.name}
+            isMovie={false}
+          />
+        );
+        break;
+
+      default:
+        console.log('data media type error');
+        break;
     }
+
+
   }
-
-  const query = createRef();
-
 
   return (
     <>
-      <SearchBar onSubmit={handleSubmit}>
-        <input ref={query} type="text" placeholder="검색어를 입력하세요" />
+      <Helmet>
+        <title>TV | Kimflix</title>
+      </Helmet>
+      <SearchBar onSubmit={onSearch}>
+        <input type="text" placeholder="검색어를 입력하세요" onChange={updateTerm} value={searchTerm} />
         <button type="submit">검색</button>
       </SearchBar>
+      {
+        loading ?
+          (<Loading></Loading>) :
+          (<Container>
+            {console.log(currentResult)}
+            {
+              currentResult &&
+              currentResult.length > 0 &&
+              <Section title={`${currentResult.length} results found for ${searchTerm}`}>
+                {currentResult.map(checkMediaType)}
+              </Section>
+            }
+
+            {error && <Message text={error} />}
+            {currentResult && currentResult.length === 0 && <Message text="Not Found Results" />}
+          </Container>)}
     </>
   )
 };
@@ -57,6 +125,7 @@ SearchPresenter.prototype = {
   error: PropType.string,
   loading: PropType.bool.isRequired,
   onSearch: PropType.func.isRequired,
+  updateTerm: PropType.func.isRequired
 }
 
 

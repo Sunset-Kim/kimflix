@@ -2,11 +2,17 @@ import React from "react";
 import PropType from "prop-types";
 import styled from "styled-components";
 
-const Container = styled.div``;
-const Title = styled.span``;
-const Grid = styled.div``;
-
-
+const Container = styled.div`
+  padding: 10px;
+`;
+const Title = styled.h2`
+font-size: 1.4rem;
+margin-bottom: 1rem;
+`;
+const Grid = styled.div`
+display: flex;
+flex-wrap: wrap;
+`;
 
 const Section = ({ title, children }) => (
   <Container>

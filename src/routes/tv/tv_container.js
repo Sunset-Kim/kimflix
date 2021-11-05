@@ -21,9 +21,9 @@ export default class extends React.Component {
         popular
       })
 
-
     }
-    catch {
+    catch (e) {
+      console.log(e);
       this.setState({
         error: "Can't find TV infomation"
       })

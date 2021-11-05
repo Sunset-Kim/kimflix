@@ -7,8 +7,14 @@ import Poster from 'components/poster';
 import Message from 'components/message';
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, {
+  EffectCoverflow, Pagination
+} from 'swiper';
 import 'swiper/swiper-bundle.min.css';
 import 'swiper/swiper.min.css'
+import 'swiper/components/effect-coverflow/effect-coverflow.min.css'
+
+SwiperCore.use([EffectCoverflow])
 
 
 
@@ -83,6 +89,7 @@ const Home = (props) => {
           popular &&
           popular.length > 0 &&
           <Swiper
+            effect={'coverflow'}
             spaceBetween={50}
             loop={true}
             centeredSlides={true}
@@ -93,6 +100,13 @@ const Home = (props) => {
               1300: {
                 slidesPerView: 5,
               },
+            }}
+            coverflowEffect={{
+              "rotate": 20,
+              "stretch": 1,
+              "depth": 100,
+              "modifier": 1,
+              "slideShadows": false
             }}
           >
             {
@@ -108,6 +122,7 @@ const Home = (props) => {
                       isMovie={true}
                     />
                   </SlideItem>
+
 
                 </SwiperSlide>))
             }

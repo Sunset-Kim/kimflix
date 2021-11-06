@@ -2,21 +2,20 @@ import React, { useEffect, useState } from 'react';
 import { moviesApi } from "../../api";
 import Loading from 'components/loading';
 import styled from 'styled-components';
-import Section from 'components/section';
 import Poster from 'components/poster';
 import Message from 'components/message';
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, {
-  EffectCoverflow, Pagination
+  EffectCoverflow
+
 } from 'swiper';
 import 'swiper/swiper-bundle.min.css';
 import 'swiper/swiper.min.css'
 import 'swiper/components/effect-coverflow/effect-coverflow.min.css'
+import MainPoster from 'components/main_poster';
 
 SwiperCore.use([EffectCoverflow])
-
-
 
 const Home = (props) => {
   const [popular, setPopular] = useState();
@@ -29,14 +28,11 @@ const Home = (props) => {
       setPopular(results);
 
     } catch {
-
-
+      setError('Not found data')
     }
-
     finally {
       setLoading(false)
     }
-
   }
 
   useEffect(() => {
@@ -46,30 +42,46 @@ const Home = (props) => {
   // styled components
   const Container = styled.div`
     padding: 2rem;
+    height: calc(100vh - 60px);
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 320px) {
+    padding: 1rem;
+  }
+
+
   `;
 
   const Title = styled.h2`
+  flex: 0;
   font-size: 2.5rem;
+  line-height: 3rem;
   font-weight: bold;
   margin: 3rem 0;
 
   .top {
     display: block;
-    margin-bottom: 1rem;
   }
   .bottom {
     display: block;
   }
 
   .color {
-    color: crimson;
+    color: #d63031;
   }
+
+  @media (max-width: 640px) {
+    font-size: 6vw;
+    line-height: 8vw;
+    margin: 2rem 0;
+  }
+
   `
 
-  const SlideItem = styled.div`
-  display:  flex;
-  justify-content: center;
-  align-items: center;
+  const SlideContainer = styled(Swiper)`
+    flex: 1;
+    width: 100%;
   `
 
   return (
@@ -88,18 +100,25 @@ const Home = (props) => {
         {
           popular &&
           popular.length > 0 &&
-          <Swiper
+          <SlideContainer
             effect={'coverflow'}
-            spaceBetween={50}
             loop={true}
             centeredSlides={true}
             breakpoints={{
               640: {
-                slidesPerView: 3,
+                slidesPerView: 1,
+                spaceBetween: 30,
+                effect: 'slide'
               },
+              641: {
+                slidesPerView: 3,
+                spaceBetween: 30
+              },
+
               1300: {
                 slidesPerView: 5,
-              },
+                spaceBetween: 50
+              }
             }}
             coverflowEffect={{
               "rotate": 20,
@@ -112,21 +131,13 @@ const Home = (props) => {
             {
               popular.map(movie => (
                 <SwiperSlide key={movie.id}>
-                  <SlideItem>
-                    <Poster
-                      id={movie.id}
-                      imageUrl={movie.poster_path}
-                      title={movie.title}
-                      year={movie.release_date}
-                      rating={movie.vote_average}
-                      isMovie={true}
-                    />
-                  </SlideItem>
-
-
+                  <MainPoster
+                    movie={movie}
+                    isMovie={true}
+                  />
                 </SwiperSlide>))
             }
-          </Swiper>
+          </SlideContainer>
         }
 
         {error && <Message text={error} />}

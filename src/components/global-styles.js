@@ -31,7 +31,14 @@ const GlobalStyle = createGlobalStyle`
     border: none;
     outline: none;
   }
+  
+  .color {
+    color: #d63031;
+  }
 
+  :root {
+    --primary: #d63031;
+  }
 `;
 
 export default GlobalStyle;

@@ -67,9 +67,6 @@ const Home = (props) => {
     display: block;
   }
 
-  .color {
-    color: #d63031;
-  }
 
   @media (max-width: 640px) {
     font-size: 6vw;

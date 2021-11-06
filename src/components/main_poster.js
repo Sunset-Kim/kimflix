@@ -41,7 +41,7 @@ width: 100%;
 height: 100%;
 border-radius: 10px;
 mask-image: linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0,0));
-transform: rotate(180deg) rotateX(60deg) ;
+transform: rotate(180deg) rotateX(-70deg) ;
 `
 
 const MainPoster = ({ isMovie, movie }) => {

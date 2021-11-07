@@ -13,11 +13,12 @@ const Container = styled.div`
 
 const Movie = () => {
 
-  const [nowPlaying, setNowPlaying] = useState()
-  const [upComing, setUpcoming] = useState()
-  const [popular, setPopular] = useState()
-  const [error, setError] = useState()
-  const [loading, setLoading] = useState(true)
+  const [nowPlaying, setNowPlaying] = useState();
+  const [upComing, setUpcoming] = useState();
+  const [popular, setPopular] = useState();
+  const [error, setError] = useState();
+  const [loading, setLoading] = useState(true);
+  const [isMovie, setIsMovie] = useState(true);
 
   const getPopular = () => {
     return moviesApi.popular();
@@ -52,61 +53,27 @@ const Movie = () => {
     {
       loading ?
         (<Loading />) :
-        (<Container>
 
-          {nowPlaying
-            && nowPlaying.length > 0
-            && <Section title="nowPlaying">
-              {
-                nowPlaying.map(movie =>
-                  <Poster
-                    key={movie.id}
-                    id={movie.id}
-                    imageUrl={movie.poster_path}
-                    title={movie.title}
-                    year={movie.release_date}
-                    rating={movie.vote_average}
-                    isMovie={true}
-                  />)}
-            </Section>
-          }
+        (<Container>
 
           {
             popular &&
             popular.length > 0 &&
-            <Section title="Popular">
-              {
-                popular.map(movie =>
-                  <Poster
-                    key={movie.id}
-                    id={movie.id}
-                    imageUrl={movie.poster_path}
-                    title={movie.title}
-                    year={movie.release_date}
-                    rating={movie.vote_average}
-                    isMovie={true}
-                  />)
-              }
-            </Section>
+            <Section title="Popular" data={popular} background={true} isMovie={isMovie} />
           }
+
+          {
+            nowPlaying
+            && nowPlaying.length > 0
+            && <Section title="nowPlaying" data={nowPlaying} isMovie={isMovie} />
+          }
+
+
 
           {
             upComing &&
             upComing.length > 0 &&
-            <Section title="UpComing..">
-              {
-                upComing.map(movie =>
-                  <Poster
-                    key={movie.id}
-                    id={movie.id}
-                    imageUrl={movie.poster_path}
-                    title={movie.title}
-                    year={movie.release_date}
-                    rating={movie.vote_average}
-                    isMovie={true}
-                  />)
-              }
-            </Section>
+            <Section title="UpComing.." data={upComing} isMovie={isMovie} />
           }
           {error && <Message text={error} />}
         </Container>)

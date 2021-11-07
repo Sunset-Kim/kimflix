@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { moviesApi } from "../../api";
 import Loading from 'components/loading';
 import styled from 'styled-components';
-import Poster from 'components/poster';
 import Message from 'components/message';
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react';

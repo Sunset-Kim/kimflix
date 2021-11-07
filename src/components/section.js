@@ -96,11 +96,7 @@ const Section = memo(({ title, data, background, isMovie }) => {
 
   useEffect(() => {
     if (data && background) {
-      const result = data.map(movie => {
-        if (movie.poster_path && movie.backdrop_path) {
-          return movie
-        }
-      })
+      const result = data.filter(movie => (movie.poster_path && movie.backdrop_path))
       setRenderData(result);
     } else {
       setRenderData(data);
@@ -119,10 +115,10 @@ const Section = memo(({ title, data, background, isMovie }) => {
             <BackgroundImg bgImg={`https://image.tmdb.org/t/p/original/${renderData[index].backdrop_path}`} />
             <BackgroundText>
               <div className="head">
-                <h3 className="title">{renderData[index].title}</h3>
+                <h3 className="title">{isMovie ? renderData[index].title : renderData[index].name}</h3>
 
                 <div className="head__info">
-                  <span className="date">{renderData[index].release_date}</span>
+                  <span className="date">{isMovie ? renderData[index].release_date : renderData[index].first_air_date}</span>
                   <span className="rate">{renderData[index].vote_average ? `⭐️ ${renderData[index].vote_average} / 10` : "Not yet vote enough"}</span>
                 </div>
               </div>
@@ -147,6 +143,7 @@ const Section = memo(({ title, data, background, isMovie }) => {
         renderData &&
         renderData.length > 0 &&
         <SwiperContainer
+          loop={true}
           autoplay={background && {
             "delay": 3000,
             "disableOnInteraction": false

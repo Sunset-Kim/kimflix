@@ -34,10 +34,14 @@ const List = styled.ul`
 `;
 
 const Item = styled.li`
-width: 60px;
+padding: 0  1rem;
 height: 60px;
 border-bottom: 5px solid ${props => props.current ? "var(--primary)" : "transparent"};
 transition: border 300ms ease-in-out;
+font-size: 1rem;
+&:hover {
+  border-bottom: 5px solid var(--primary);
+}
 `;
 
 const SLink = styled(Link)`
@@ -52,10 +56,12 @@ export default withRouter(({ location: { pathname } }) => (
   (
     <Header>
       <Logo>
-        <b className="color">Kim</b>Flix
+        <SLink to="/">
+          <b className="color">Kim</b>Flix
+        </SLink>
+
       </Logo>
       <List>
-        <Item current={pathname === '/'}><SLink to="/">Home</SLink></Item>
         <Item current={pathname === '/movie'}><SLink to="/movie">Movies</SLink></Item>
         <Item current={pathname === '/tv'}><SLink to="/tv">TV</SLink></Item>
         <Item current={pathname === '/search'}><SLink to="/search">Search</SLink></Item>

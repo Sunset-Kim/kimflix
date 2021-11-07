@@ -45,7 +45,6 @@ transform: rotate(180deg) rotateX(-70deg) ;
 `
 
 const MainPoster = ({ isMovie, movie }) => {
-  { console.log(movie) }
 
   return (
     <PosterLink to={isMovie ? `/movie/${movie.id}` : `/show/${movie.id}`}>

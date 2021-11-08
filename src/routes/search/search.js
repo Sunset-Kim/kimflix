@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { searchApi } from 'api';
 import styled from "styled-components";
 import Loading from "components/loading";
@@ -6,7 +6,7 @@ import { Person, Poster } from "components/search_result"
 import Message from "components/message";
 import { Helmet } from "react-helmet";
 import { debounce } from 'lodash';
-import { useState } from 'react/cjs/react.development';
+
 
 const Container = styled.div`
   padding: 10px 10px;

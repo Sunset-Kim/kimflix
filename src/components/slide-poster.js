@@ -26,7 +26,7 @@ const Title = styled.h4`
 display: block;
 font-size: 1rem;
 font-weight: bold;
-margin-bottom: 0.3rem;
+margin-top: 0.5rem;
 `;
 
 const Year = styled.span`
@@ -40,7 +40,12 @@ const SlidePoster = ({ data, isMovie = false }) => (
   <PosterLink to={isMovie ? `/movie/${data.id}` : `/show/${data.id}`}>
     <Container>
       <Image bgUrl={data.poster_path ? data.poster_path : null} />
-      <Title>{data.length > 12 ? data.title.substr(0, 12) + '...' : data.title}</Title>
+      <Title>
+        {isMovie ?
+          (data.title.length > 16 ? data.title.substr(0, 16) + '...' : data.title) :
+          (data.name.length > 16 ? data.name.substr(0, 16) + '...' : data.name)
+        }
+      </Title>
       <Year>{data.year}</Year>
     </Container>
   </PosterLink >

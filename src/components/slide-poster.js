@@ -6,7 +6,7 @@ import PropType from "prop-types";
 const Container = styled.div`
 font-size: 0.9rem;
 margin: 5px;
-width: 200px;
+width: 100%;
 `;
 
 const PosterLink = styled(Link)`
@@ -17,8 +17,8 @@ const Image = styled.div`
 background-image: url("https://image.tmdb.org/t/p/w300${props => props.bgUrl}");
 background-size: cover;
 background-position: center center;
-width: 200px;
-height: 300px;
+width: 100%;
+padding-top: 150%;
 transition: opacity 300ms ease-in-out;
 `
 
@@ -36,8 +36,21 @@ color: rgba(255, 255, 255, 0.5);
 `;
 
 
-const SlidePoster = ({ data, isMovie = false }) => (
-  <PosterLink to={isMovie ? `/movie/${data.id}` : `/show/${data.id}`}>
+const SlidePoster = ({ data, isMovie = false, link = true }) => (
+  link ? (
+    <PosterLink to={isMovie ? `/movie/${data.id}` : `/show/${data.id}`}>
+      <Container>
+        <Image bgUrl={data.poster_path ? data.poster_path : null} />
+        <Title>
+          {isMovie ?
+            (data.title.length > 16 ? data.title.substr(0, 16) + '...' : data.title) :
+            (data.name.length > 16 ? data.name.substr(0, 16) + '...' : data.name)
+          }
+        </Title>
+        <Year>{data.year}</Year>
+      </Container>
+    </PosterLink >) : (
+
     <Container>
       <Image bgUrl={data.poster_path ? data.poster_path : null} />
       <Title>
@@ -48,7 +61,8 @@ const SlidePoster = ({ data, isMovie = false }) => (
       </Title>
       <Year>{data.year}</Year>
     </Container>
-  </PosterLink >
+
+  )
 );
 
 SlidePoster.prototype = {

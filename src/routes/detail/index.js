@@ -1,2 +1,2 @@
-import DetailContainer from './detail_container';
-export default DetailContainer;
+import Detail from './detail';
+export default Detail;

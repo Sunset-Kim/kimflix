@@ -8,13 +8,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import 'swiper/swiper.min.css';
 import 'swiper/swiper-bundle.min.css';
 import SwiperCore, {
-  Autoplay, Pagination, Navigation
+  Autoplay
 } from 'swiper';
 
 
 SwiperCore.use([Autoplay]);
 
 const Container = styled.div`
+  width: 100%;
   padding: 2rem 1rem;
 `;
 const Title = styled.h2`
@@ -71,9 +72,7 @@ const BackgroundText = styled.div`
 `
 
 const SwiperContainer = styled(Swiper)`
-.shrink {
-  flex-shrink: 1;
-}
+
 `
 
 const ButtonLink = styled(Link)`
@@ -148,7 +147,26 @@ const Section = memo(({ title, data, background, isMovie }) => {
             "delay": 3000,
             "disableOnInteraction": false
           }}
-          slidesPerView={'auto'} spaceBetween={10} onSlideChange={handleSlideChange}>
+          slidesPerView={1}
+          breakpoints={{
+            '320': {
+              "slidesPerView": 3,
+            },
+            '640': {
+              "slidesPerView": 4,
+            },
+            '1024': {
+              "slidesPerView": 5,
+            },
+            '1200': {
+              "slidesPerView": 6,
+            },
+            '1600': {
+              "slidesPerView": 7,
+            },
+
+          }
+          } spaceBetween={10} onSlideChange={handleSlideChange}>
           {
             renderData.map(movie =>
               <SwiperSlide className="shrink" key={movie.id} >
@@ -166,10 +184,6 @@ const Section = memo(({ title, data, background, isMovie }) => {
 
 Section.prototype = {
   title: PropType.string,
-  children: PropType.oneOfType([
-    PropType.arrayOf(PropType.node),
-    PropType.node,
-  ])
 }
 
 export default Section;

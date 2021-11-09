@@ -11,9 +11,21 @@ const api = axios.create({
 })
 
 export const moviesApi = {
-  nowPlaying: () => api.get('movie/now_playing'),
-  upComing: () => api.get('movie/upcoming'),
-  popular: () => api.get('movie/popular'),
+  nowPlaying: (page = 1) => api.get('movie/now_playing', {
+    params: {
+      page
+    }
+  }),
+  upComing: (page = 1) => api.get('movie/upcoming', {
+    params: {
+      page
+    }
+  }),
+  popular: (page = 1) => api.get('movie/popular', {
+    params: {
+      page
+    }
+  }),
   movieDetail: (id) => api.get(`movie/${id}`, {
     params: {
       append_to_response: 'videos'
@@ -23,9 +35,21 @@ export const moviesApi = {
 }
 
 export const tvApi = {
-  topRated: () => api.get('tv/top_rated'),
-  popular: () => api.get('tv/popular'),
-  airingToday: () => api.get('tv/airing_today'),
+  topRated: (page = 1) => api.get('tv/top_rated', {
+    params: {
+      page
+    }
+  }),
+  popular: (page = 1) => api.get('tv/popular', {
+    params: {
+      page
+    }
+  }),
+  airingToday: (page = 1) => api.get('tv/airing_today', {
+    params: {
+      page
+    }
+  }),
   tvDetail: (id) => api.get(`tv/${id}`, {
     params: {
       append_to_response: 'videos'

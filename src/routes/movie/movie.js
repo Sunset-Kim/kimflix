@@ -73,7 +73,7 @@ const Movie = () => {
           {
             upComing &&
             upComing.length > 0 &&
-            <Section title="UpComing.." data={upComing} isMovie={isMovie} />
+            <Section title="UpComing" data={upComing} isMovie={isMovie} />
           }
           {error && <Message text={error} />}
         </Container>)

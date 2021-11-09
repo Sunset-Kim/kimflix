@@ -6,6 +6,7 @@ import Movie from "routes/movie";
 import TV from "routes/tv";
 import Detail from "routes/detail"
 import Header from "./header";
+import List from "routes/list";
 
 export default () => (
   <Router>
@@ -16,9 +17,10 @@ export default () => (
         <Route path="/movie" exact component={Movie} />
         <Route path="/search" component={Search} />
         <Route path="/tv" exact component={TV} />
-        <Route path="/tv/popular" render={() => <h1>popular</h1>}></Route>
-        <Route path="/movie/:id" component={Detail}></Route>
-        <Route path="/show/:id" component={Detail}></Route>
+        <Route path="/movie/:id" exact component={Detail}></Route>
+        <Route path="/show/:id" exact component={Detail}></Route>
+        <Route path="/movie/list/:list" exact component={List}></Route>
+        <Route path="/tv/list/:list" exact component={List}></Route>
         <Redirect from="*" to="/" />
       </Switch>
     </>

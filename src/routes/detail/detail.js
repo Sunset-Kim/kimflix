@@ -153,7 +153,7 @@ const Detail = (props) => {
     } = props
     const parsedId = parseInt(id);
     // id가 숫자가 아니면 home으로 보내기
-    if (isNaN(parsedId)) {
+    if (isNaN(parsedId) && id !== 'list') {
       return push('/');
     }
     getDetail(parsedId);
@@ -261,23 +261,28 @@ const Detail = (props) => {
           </Content>
 
           {
-            // 시리즈 시즌
-            result.seasons &&
-            result.seasons.length > 0 &&
-            <DetailTab title="시즌">
-              <SlideContents data={result.seasons} isMovie={isMovie} loop={false} link={false} />
-            </DetailTab>
+            loading ?
+              <Loading /> :
+              // 시리즈 시즌
+              result.seasons &&
+              result.seasons.length > 0 &&
+              <DetailTab title="시즌">
+                <SlideContents data={result.seasons} isMovie={isMovie} loop={false} link={false} />
+              </DetailTab>
           }
 
           {
-            // 관련영상
-            result.videos.results &&
-            result.videos.results.length > 0 &&
-            <DetailTab title="관련영상">
-              {
-                <SlideYoutube data={result.videos.results} />
-              }
-            </DetailTab>
+            loading ?
+              <Loading />
+              :
+              // 관련영상
+              result.videos.results &&
+              result.videos.results.length > 0 &&
+              <DetailTab title="관련영상">
+                {
+                  <SlideYoutube data={result.videos.results} />
+                }
+              </DetailTab>
           }
 
 

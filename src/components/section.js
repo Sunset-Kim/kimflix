@@ -47,6 +47,7 @@ const BackgroundContainer = styled.div`
   height: 50vh;
   border-radius: 10px;
   overflow: hidden;
+  margin-bottom: 1rem;
   
 `
 
@@ -153,7 +154,7 @@ const Section = memo(({ title, data, background, isMovie }) => {
         title &&
         (<Title>
           <h2>{title}</h2>
-          <Link className="btn_more" to={`${isMovie ? "movie" : "tv"}/list/${title.toLowerCase()}`}>더보기</Link>
+          <Link className="btn_more" to={`${isMovie ? "movie" : "tv"}/list/${title.toLowerCase().replace(' ', '')}`}>더보기</Link>
         </Title>)
       }
 

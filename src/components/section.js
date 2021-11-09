@@ -18,9 +18,28 @@ const Container = styled.div`
   width: 100%;
   padding: 2rem 1rem;
 `;
-const Title = styled.h2`
-font-size: 1.4rem;
+const Title = styled.div`
+display: flex;
+justify-content: space-between;
+align-items: center;
 margin-bottom: 1rem;
+
+h2 {
+  font-size: 1.4rem;
+  
+}
+
+
+.btn_more {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--primary);
+  border-radius: 0.5rem;
+  transition: background 300ms ease-in-out;
+  &:hover {
+    background: var(--primary);
+  }
+}
+
 `;
 
 const BackgroundContainer = styled.div`
@@ -35,7 +54,7 @@ const BackgroundImg = styled.div`
   width: 100%;
   height: 50vh;
   display: flex;
-  background-image: url(${props => props.bgImg});
+  background-image: url(https://image.tmdb.org/t/p/original/${props => props.bgImg});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: right top;
@@ -111,7 +130,7 @@ const Section = memo(({ title, data, background, isMovie }) => {
         renderData &&
         background && (
           (<BackgroundContainer>
-            <BackgroundImg bgImg={`https://image.tmdb.org/t/p/original/${renderData[index].backdrop_path}`} />
+            <BackgroundImg bgImg={renderData[index].backdrop_path} />
             <BackgroundText>
               <div className="head">
                 <h3 className="title">{isMovie ? renderData[index].title : renderData[index].name}</h3>
@@ -133,7 +152,8 @@ const Section = memo(({ title, data, background, isMovie }) => {
         // title
         title &&
         (<Title>
-          {title}
+          <h2>{title}</h2>
+          <Link className="btn_more" to={`${isMovie ? "movie" : "tv"}/list/${title.toLowerCase()}`}>더보기</Link>
         </Title>)
       }
 

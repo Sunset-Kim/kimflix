@@ -14,7 +14,7 @@ const PosterLink = styled(Link)`
 `
 
 const Image = styled.div`
-background-image: url("https://image.tmdb.org/t/p/w300${props => props.bgUrl}");
+background-image: url(${props => props.bgUrl});
 background-size: cover;
 background-position: center center;
 width: 100%;
@@ -40,7 +40,7 @@ const SlidePoster = ({ data, isMovie = false, link = true }) => (
   link ? (
     <PosterLink to={isMovie ? `/movie/${data.id}` : `/show/${data.id}`}>
       <Container>
-        <Image bgUrl={data.poster_path ? data.poster_path : null} />
+        <Image bgUrl={data.poster_path ? `https://image.tmdb.org/t/p/w300${data.poster_path}` : require('../assets/notfound.jpeg').default} />
         <Title>
           {isMovie ?
             (data.title.length > 16 ? data.title.substr(0, 16) + '...' : data.title) :

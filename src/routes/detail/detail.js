@@ -180,7 +180,7 @@ const Detail = (props) => {
           <BackDrop bgBack={`https://image.tmdb.org/t/p/original/${result.backdrop_path}`} />
           <Content>
             <ContentImg>
-              <Cover bgPoster={result.poster_path ? `https://image.tmdb.org/t/p/original/${result.poster_path}` : null} />
+              <Cover bgPoster={result.poster_path ? `https://image.tmdb.org/t/p/original/${result.poster_path}` : require('../../assets/notfound.jpeg').default} />
             </ContentImg>
 
             <Data>
@@ -234,7 +234,7 @@ const Detail = (props) => {
                 <DetailTab title="제작사">
                   {result.production_companies.map(company =>
                     <ProductContainer key={company.id}>
-                      <ProductItem bgImg={`https://image.tmdb.org/t/p/w200/${company.logo_path}`} />
+                      <ProductItem bgImg={company.logo_path ? `https://image.tmdb.org/t/p/w200/${company.logo_path}` : require('../../assets/notfound.jpeg').default} />
                       <span>{company.name}</span>
                     </ProductContainer>)}
                 </DetailTab>

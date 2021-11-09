@@ -49,7 +49,7 @@ const SlideYoutube = ({ data, autoplay = false }) => {
     data &&
     data.length > 0 &&
     <SwiperContainer
-      loop={true}
+      loop={false}
       navigation={true}
       autoplay={autoplay && {
         "delay": 3000,

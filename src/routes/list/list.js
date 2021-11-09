@@ -146,7 +146,7 @@ const List = (props) => {
       </Container >
       {isComplete && <Complete>모든 결과값을 불러왔습니다!!</Complete>}
       {console.log(loading)}
-      <Loader ref={loader}>{loading && "로딩중..."}</Loader>
+      <Loader ref={loader}>{loading && !isComplete && "로딩중..."}</Loader>
     </>
 
   )

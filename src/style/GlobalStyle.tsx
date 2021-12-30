@@ -4,21 +4,33 @@ import reset from "styled-reset";
 const GlobalStyle = createGlobalStyle`
   ${reset};
 
+  @font-face {
+    font-family: 'GmarketSans';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff') font-weight-normal;
+    font-weight: normal;
+    font-style: normal;
+  }
+
+
+  html,body,#root {
+    min-height: 100%;
+  }
+
   a{
     text-decoration: none;
     color: inherit;
   }
   
-  & * {
+  *, *::before, *::after {
     box-sizing: border-box;
   }
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'GmarketSans';
+    letter-spacing: 0.02em;
     font-size: 14px;
-    background: rgba(20, 20, 20, 1);
+    background: ${({ theme }) => theme.color.background.default};
     color: #fff;
-    padding-top: 60px;
   }
 
   button {

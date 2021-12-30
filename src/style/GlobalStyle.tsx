@@ -1,7 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
-
 const GlobalStyle = createGlobalStyle`
   ${reset};
 
@@ -31,15 +30,6 @@ const GlobalStyle = createGlobalStyle`
     border: none;
     outline: none;
   }
-  
-  .color {
-    color: #d63031;
-  }
-
-  :root {
-    --primary: #d63031;
-  }
 `;
 
 export default GlobalStyle;
-

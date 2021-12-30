@@ -1,0 +1,34 @@
+import "styled-components";
+
+interface Sizes {
+  mobile: number;
+  tablet: number;
+  desktop: number;
+}
+
+type BackQuoteArgs = [TemplateStringsArray];
+
+// 반응형 css Props을 만들어주는 object를 선언함
+interface Media {
+  mobile: (...args: BackQuoteArgs) => CSSProp | undefined;
+  tablet: (...args: BackQuoteArgs) => CSSProp | undefined;
+  desktop: (...args: BackQuoteArgs) => CSSProp | undefined;
+}
+
+interface Color {
+  default: string;
+  dark?: string;
+  light?: string;
+}
+
+interface Colors {
+  [key: string]: Color;
+}
+
+declare module "styled-components" {
+  export interface DefaultTheme {
+    sizes: Sizes;
+    media: Media;
+    color: Colors;
+  }
+}

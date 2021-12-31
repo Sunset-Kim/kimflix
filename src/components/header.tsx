@@ -25,17 +25,19 @@ const Col = styled.div`
   align-items: center;
 `;
 
-const Logo = styled.div`
-  margin-right: auto;
-`;
+const Logo = styled.div``;
 
 const Svg = styled(motion.svg)`
+  max-width: 60%;
+  min-width: 120px;
   width: 100%;
   height: 100%;
   fill: ${({ theme }) => theme.color.primary.default};
 `;
 
-const Nav = styled.nav``;
+const Nav = styled.nav`
+  margin-left: auto;
+`;
 
 const List = styled.ul`
   display: flex;
@@ -88,6 +90,10 @@ const Input = styled(motion.input)`
   transform-origin: right center;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid white;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
 `;
 
 const Icon = styled(motion.svg)`
@@ -105,6 +111,7 @@ const logoVariants: Variants = {
   },
   active: {
     fillOpacity: [1, 0, 1],
+
     transition: {
       repeat: Infinity,
       type: "spring",
@@ -116,7 +123,7 @@ const logoVariants: Variants = {
 const headerVariants: Variants = {
   top: {
     backgroundColor: "rgb(28, 28, 28, 0)",
-    backdropFilter: "",
+    backdropFilter: "blur(0px)",
   },
   scroll: {
     backgroundColor: "rgb(28, 28, 28, 0.5)",
@@ -164,20 +171,22 @@ const Header = () => {
       {/* 1열 : nav */}
       <Col>
         {/* logo */}
-        <Logo>
-          <SLink to="/">
-            <Svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 196 59"
-              variants={logoVariants}
-              initial="normal"
-              whileHover="active"
-            >
-              <path d="M42.2501 0.757812L39.3521 42.2067L38.5733 42.2466L31.6807 12.9224H23.164L18.0078 43.3072L16.9027 43.3639L12.2862 12.9224H0.414062L11.2151 58.2397L23.2891 57.4557L27.2173 29.3268L28.3694 29.2653L33.6295 56.7761L45.1855 56.0206L54.3625 0.757812H42.2501Z" />
-              <path d="M78.2713 12.9184V20.771H86.0946V56.1956H95.8432V20.771H103.218V12.9184H78.2713ZM153.464 29.6389H146.004V12.9763H136.285V56.2532H146.004V37.4912H153.464V56.2532H163.183V12.9763H153.464V29.6389ZM119.613 12.4527H117.92C109.142 12.4527 105.631 16.9316 105.631 24.203V44.8521C105.631 52.1239 109.142 56.777 118.108 56.777H119.801C128.704 56.777 131.839 51.4252 131.839 45.3763V37.9891H122.309V44.8521C122.309 47.4123 121.431 48.9826 118.923 48.9826C116.477 48.9826 115.663 47.5286 115.663 44.7946V24.1446C115.663 21.4105 116.477 20.015 118.923 20.015C121.493 20.015 122.309 21.5269 122.309 24.1446V29.147H131.839V23.621C131.839 16.4087 128.453 12.4527 119.613 12.4527ZM68.782 41.4224L65.9558 23.3316H64.2841L61.4576 41.4224H68.782ZM72.3262 12.9184L79.9759 56.1956H71.0902L70.009 49.2753H60.2308L59.1493 56.1956H50.2636L57.9136 12.9184H72.3262ZM184.391 41.4224L181.564 23.3316H179.893L177.066 41.4224H184.391ZM187.935 12.9184L195.585 56.1956H186.699L185.618 49.2753H175.84L174.759 56.1956H165.873L173.522 12.9184H187.935Z" />
+
+        <SLink to="/">
+          <Logo>
+            <Svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 174.18 31.03">
+              <g>
+                <path d="M11.16,19.19l-4.22,4.88v6.96H0V0h6.93v14.63L19.34,0h8.49L15.65,14.05l12.84,16.99h-8.65L11.16,19.19z" />
+                <path d="M38.39,0v31.05h-6.93V0H38.39z" />
+                <path d="M43.87,0h5.52l10.7,17.37L70.79,0h5.52v31.05h-6.93V14.02l-7.19,11.92H58L50.8,14.02v17.03h-6.93   C43.87,31.05,43.87,0,43.87,0z" />
+                <path d="M81.81,0h22.77v6.09H88.74v7.04h14.09v6.01H88.74v11.89h-6.93V0z" />
+                <path d="M115.33,0v31.05h-6.93V0H115.33z" />
+                <path d="M127.74,0v24.91h15.5v6.13h-22.43V0H127.74z" />
+                <path d="M154.98,15.38l-9.94-15.39h8.23l6.24,10.13l6.44-10.13h7.88l-9.98,15.16l10.33,15.88h-8.11l-6.67-10.7l-6.82,10.7h-7.88   L154.98,15.38z" />
+              </g>
             </Svg>
-          </SLink>
-        </Logo>
+          </Logo>
+        </SLink>
 
         {/* nav */}
         <Nav>

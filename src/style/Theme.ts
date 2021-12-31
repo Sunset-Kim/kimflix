@@ -52,15 +52,17 @@ export const Theme: DefaultTheme = {
   media,
   color: {
     primary: {
-      default: "#F82F62",
+      default: "#0154FA",
+      dark: "#162AC0",
+      light: "#13BFF4",
     },
     secondary: {
       default: "#31313",
     },
     background: {
-      default: "#0D0D0D",
-      light: "#2D2C2A",
-      dark: "#131218",
+      dark: "#0D0D0D",
+      light: "#1c1c1c",
+      default: "#131218",
     },
   },
 };

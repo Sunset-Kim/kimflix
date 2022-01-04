@@ -1,5 +1,21 @@
 import { DefaultTheme, css } from "styled-components";
-import { BackQuoteArgs, Media, Sizes } from "./style";
+import { BackQuoteArgs, Color, Media, Sizes } from "./style";
+
+const color: { [key: string]: Color } = {
+  primary: {
+    default: "#0154FA",
+    dark: "#162AC0",
+    light: "#13BFF4",
+  },
+  secondary: {
+    default: "#31313",
+  },
+  background: {
+    dark: "#0D0D0D",
+    light: "#1c1c1c",
+    default: "#131218",
+  },
+};
 
 const sizes: Sizes = {
   mobile: 320,
@@ -47,22 +63,37 @@ Object.keys(sizes).reduce((acc, label) => {
   return acc;
 }, media);
 
+const baseButton = css`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 999px;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  background-color: transparent;
+`;
+
 export const Theme: DefaultTheme = {
   sizes,
   media,
-  color: {
-    primary: {
-      default: "#0154FA",
-      dark: "#162AC0",
-      light: "#13BFF4",
+  color,
+  button: {
+    size: {
+      padding: css`
+        ${baseButton}
+        padding: 8px 16px;
+        border-radius: 16px;
+      `,
     },
-    secondary: {
-      default: "#31313",
-    },
-    background: {
-      dark: "#0D0D0D",
-      light: "#1c1c1c",
-      default: "#131218",
+    style: {
+      primary: css`
+        background-color: ${color.primary.default};
+        transition: background-color 0.3s ease-in-out;
+        &:hover {
+          background-color: ${color.primary.dark};
+        }
+      `,
     },
   },
 };

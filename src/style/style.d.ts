@@ -1,4 +1,5 @@
 import "styled-components";
+import { CSSProp } from "styled-components";
 
 interface Sizes {
   mobile: number;
@@ -21,6 +22,21 @@ interface Color {
   light?: string;
 }
 
+interface Button {
+  style: {
+    primary?: CSSProp;
+    secondary?: CSSProp;
+    outlined?: CSSProp;
+    ghost?: CSSProp;
+  };
+  size: {
+    padding?: CSSProp;
+    sm?: CSSProp;
+    md?: CSSProp;
+    lg?: CSSProp;
+  };
+}
+
 interface Colors {
   [key: string]: Color;
 }
@@ -30,5 +46,6 @@ declare module "styled-components" {
     sizes: Sizes;
     media: Media;
     color: Colors;
+    button?: Button;
   }
 }

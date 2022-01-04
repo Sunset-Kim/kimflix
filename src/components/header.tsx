@@ -192,11 +192,11 @@ const Header = () => {
           <List>
             <Item current={pathname === "/movie"}>
               <SLink to="/movie">Movies</SLink>
-              {pathname === "/movie" ? <Circle layoutId="path" /> : null}
+              {pathname.includes("/movie") ? <Circle layoutId="path" /> : null}
             </Item>
             <Item current={pathname === "/tv"}>
               <SLink to="/tv">TV</SLink>
-              {pathname === "/tv" ? <Circle layoutId="path" /> : null}
+              {pathname.includes("/tv") ? <Circle layoutId="path" /> : null}
             </Item>
             <Item current={pathname === "/search"}>
               <SLink to="/search">Search</SLink>

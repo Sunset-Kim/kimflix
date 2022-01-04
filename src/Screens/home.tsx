@@ -17,12 +17,19 @@ SwiperCore.use([EffectCoverflow]);
 
 // styled components
 const Container = styled.div`
+  padding: 0 20px;
+  padding-top: 10%;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
 
-  @media (max-width: 320px) {
-    padding: 1rem;
-  }
+  ${(props) => props.theme.media.tablet`
+  padding: 0;
+  padding-top: 5%;
+  `};
 `;
 
 const Title = styled.h2`

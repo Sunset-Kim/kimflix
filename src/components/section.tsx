@@ -1,24 +1,16 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import SlidePoster from "./slide-poster";
-import { Link } from "react-router-dom";
-// swiper
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/swiper.min.css";
-import "swiper/swiper-bundle.min.css";
-import SwiperCore, { Autoplay } from "swiper";
+import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { createImgPath } from "Utils/imgpath";
 import { IMovie, ITV } from "services/api";
-import { SwiperEvents } from "swiper/types/swiper-events";
-
-SwiperCore.use([Autoplay]);
+import { LinkButton } from "components/button";
 
 // ### style
-const Container = styled.div`
-  width: 100%;
-  padding: 2rem 1rem;
-`;
-const Title = styled.div`
+const Container = styled.div``;
+
+const Title = styled(motion.div)`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -43,69 +35,107 @@ const BackgroundContainer = styled.div`
   position: relative;
   height: 80vh;
   overflow: hidden;
-  margin-bottom: 1rem;
+  background: ${(props) => props.theme.color.background.default};
+  z-index: 1;
 `;
 
-const BackgroundImg = styled.div<{ bgImg: string | null }>`
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 5%,
+    rgba(0, 0, 0, 0) 25%,
+    rgba(0, 0, 0, 1)
+  );
+`;
+
+const BackgroundImg = styled(Overlay)<{ bgImg: string | null }>`
+  z-index: -12;
   background-image: ${(props) =>
     props.bgImg ? `url(${createImgPath(props.bgImg, true)})` : ""};
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: right top;
-  transition: background-image 300ms ease-in-out;
-  mask-image: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 1),
-    rgba(0, 0, 0, 0),
-    10%
-  );
+  background-position: left top;
+  transition: background-image 0.2s ease-in-out;
 `;
 
 const BackgroundText = styled.div`
   padding: 2rem;
   position: absolute;
-  width: 70%;
-  top: 0;
+  width: 100%;
+  top: 40%;
   left: 0;
   z-index: 1;
+  min-width: 280px;
 
   h3 {
-    font-size: 2rem;
+    font-size: 20px;
     font-weight: bold;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5em;
   }
+
   .head__info {
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
+    font-size: 14px;
+    margin-bottom: 1em;
     .date {
-      margin-right: 1rem;
+      margin-right: 1em;
     }
   }
 
   p {
-    font-size: 1.2rem;
-    line-height: 1.6rem;
-    margin-bottom: 2rem;
+    font-size: 15px;
+    line-height: 1.4em;
+    margin-bottom: 2em;
   }
+
+  /* tablet */
+  ${(props) => props.theme.media.tablet`
+  width: 70%;
+
+  h3 {
+    font-size: 24px;
+  }
+
+  .head__info {
+    font-size: 15px;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 1.4em;
+    margin-bottom: 2em;
+  }
+  
+  `}
+
+  /* desktop */
+  ${(props) => props.theme.media.desktop`
+  width: 50%;
+  `}
 `;
 
-const SwiperContainer = styled(Swiper)``;
+const ContentsContainer = styled.div<{ isBackground: Boolean }>`
+  position: relative;
+  z-index: 11;
+  margin: 0 2rem;
+  /* margin-top: ${(props) => (props.isBackground ? "-100px" : "")}; */
+  margin-bottom: 60px;
+`;
+const SlideContainer = styled.div``;
 
-const ButtonLink = styled(Link)`
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background: var(--primary);
-  border-radius: 5px;
+const SlideWrapper = styled(motion.div)`
+  width: fit-content;
+  display: flex;
 `;
 
 interface SectionProps {
   title: string;
   background?: boolean;
-  isMovie: boolean;
-  data: IMovie[] | ITV[];
+  data?: IMovie[] | ITV[];
 }
 
 // #### components
@@ -114,115 +144,117 @@ const Section: React.FC<SectionProps> = ({
   title,
   data,
   background = false,
-  isMovie,
 }) => {
+  const slideRef = useRef(null);
   const [index, setIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const isMovie = data && "title" in data[0] ? true : false;
+  const navigate = useNavigate();
 
-  const handleSlideChange = (e: SwiperCore) => {
-    const index = e.realIndex;
+  const onHover = (index: number) => {
     setIndex(index);
   };
+
+  const onDragStart = () => {
+    setIsDragging(true);
+  };
+
+  const onDrageEnd = () => {
+    setTimeout(() => setIsDragging(false), 1500);
+  };
+
+  const Data = data && isMovie ? (data as IMovie[]) : (data as ITV[]);
 
   return (
     <Container>
       {
-        // background
-        data && background && (
+        // banner
+        Data && background && (
           <BackgroundContainer>
-            <BackgroundImg bgImg={data[index].backdrop_path ?? null} />
+            <Overlay />
+            <BackgroundImg bgImg={Data[index].backdrop_path ?? null} />
             <BackgroundText>
               <div className="head">
-                <h3 className="title">{data[index].title}</h3>
+                <h3 className="title">
+                  {(Data[index] as IMovie).title || (Data[index] as ITV).name}
+                </h3>
 
                 <div className="head__info">
                   <span className="date">
-                    {isMovie ? data[index].release_date : null}
+                    {(Data[index] as IMovie).release_date || null}
                   </span>
                   <span className="rate">
-                    {data[index].vote_average
-                      ? `⭐️ ${data[index].vote_average} / 10`
+                    {Data[index].vote_average
+                      ? `⭐️ ${Data[index].vote_average} / 10`
                       : "Not yet vote enough"}
                   </span>
                 </div>
               </div>
 
               <p>
-                {data[index].overview.length > 200
-                  ? data[index].overview.substr(0, 200) + "..."
-                  : data[index].overview}
+                {Data[index].overview.length > 200
+                  ? Data[index].overview.substr(0, 200) + "..."
+                  : Data[index].overview}
               </p>
-              <ButtonLink
-                to={
-                  isMovie
-                    ? `/movie/${data[index].id}`
-                    : `/show/${data[index].id}`
-                }
-              >
-                자세히보기
-              </ButtonLink>
+
+              <LinkButton>
+                <Link
+                  to={
+                    isMovie
+                      ? `/movie/${Data[index].id}`
+                      : `/tv/${Data[index].id}`
+                  }
+                >
+                  자세히보기
+                </Link>
+              </LinkButton>
             </BackgroundText>
           </BackgroundContainer>
         )
       }
+      <ContentsContainer isBackground={background}>
+        {
+          // title
+          title && (
+            <Title>
+              <h2>{title}</h2>
+              <Link
+                to={`${isMovie ? "movie" : "tv"}/list/${title
+                  .toLowerCase()
+                  .replace(" ", "")}`}
+              >
+                expand more
+              </Link>
+            </Title>
+          )
+        }
 
-      {
-        // title
-        title && (
-          <Title>
-            <h2>{title}</h2>
-            <Link
-              className="btn_more"
-              to={`${isMovie ? "movie" : "tv"}/list/${title
-                .toLowerCase()
-                .replace(" ", "")}`}
-            >
-              더보기
-            </Link>
-          </Title>
-        )
-      }
-
-      {
-        // slide
-        data && (
-          <SwiperContainer
-            loop={true}
-            autoplay={
-              background && {
-                delay: 3000,
-                disableOnInteraction: false,
-              }
-            }
-            slidesPerView={1}
-            breakpoints={{
-              "320": {
-                slidesPerView: 3,
-              },
-              "640": {
-                slidesPerView: 4,
-              },
-              "1024": {
-                slidesPerView: 5,
-              },
-              "1200": {
-                slidesPerView: 6,
-              },
-              "1600": {
-                slidesPerView: 7,
-              },
-            }}
-            spaceBetween={10}
-            onSlideChange={handleSlideChange}
-          >
-            {data &&
-              data.map((movie) => (
-                <SwiperSlide className="shrink" key={movie.id}>
-                  <SlidePoster data={movie} isMovie={isMovie} />
-                </SwiperSlide>
-              ))}
-          </SwiperContainer>
-        )
-      }
+        {
+          // slide
+          data && (
+            <SlideContainer ref={slideRef}>
+              <SlideWrapper
+                drag="x"
+                dragConstraints={slideRef}
+                onDragStart={onDragStart}
+                onDragEnd={onDrageEnd}
+              >
+                {data &&
+                  data.map((movie, i) => (
+                    <SlidePoster
+                      key={movie.id}
+                      index={i}
+                      isDrag={isDragging}
+                      data={movie}
+                      isMovie={isMovie}
+                      onHover={onHover}
+                    />
+                  ))}
+              </SlideWrapper>
+            </SlideContainer>
+          )
+        }
+      </ContentsContainer>
     </Container>
   );
 };

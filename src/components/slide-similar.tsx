@@ -1,10 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { IMovie, ITV } from "services/api";
 import styled from "styled-components";
 import { createImgPath } from "Utils/imgpath";
 
-const Container = styled(Link)`
+const Container = styled.div`
   position: relative;
   display: block;
   width: 150px;
@@ -39,26 +39,39 @@ const Info = styled.div`
 
 interface SlideSimilarProps {
   data: IMovie | ITV;
+  isDrag: boolean;
 }
-const SlideSimilar: React.FC<SlideSimilarProps> = ({ data }) => {
+const SlideSimilar: React.FC<SlideSimilarProps> = ({ data, isDrag }) => {
+  const navigate = useNavigate();
   const isMovie = "title" in data ? true : false;
 
+  const onPushDetail = () => {
+    if (isDrag) return;
+    isMovie
+      ? navigate(`/movie/detail/${data.id}`)
+      : navigate(`/tv/detail/${data.id}`);
+  };
   return (
-    <Container
-      to={isMovie ? `/movie/detail/${data.id}` : `/tv/detail/${data.id}`}
-    >
+    <Container onClick={onPushDetail}>
       <img
         src={createImgPath(data.poster_path, false)}
         alt={isMovie ? (data as IMovie).title : (data as ITV).name}
       />
       <Info>
-        <h3>{isMovie ? (data as IMovie).title : (data as ITV).name}</h3>
+        <h3>
+          {isMovie
+            ? (data as IMovie).title.length > 8
+              ? (data as IMovie).title.substring(0, 8) + "..."
+              : (data as IMovie).title
+            : (data as ITV).name.length > 8
+            ? (data as ITV).name.substring(0, 8) + "..."
+            : (data as ITV).name}
+        </h3>
         <span>
           {isMovie
             ? (data as IMovie).release_date
             : (data as ITV).first_air_date}
         </span>
-        <span>{isMovie ? (data as IMovie).title : (data as ITV).name}</span>
       </Info>
     </Container>
   );

@@ -142,7 +142,7 @@ export type Video = {
 };
 
 export type Videos = {
-  results?: Video[];
+  results: Video[];
 };
 
 export type Season = {

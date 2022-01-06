@@ -16,6 +16,6 @@ const Container = styled.div`
   }
 `;
 
-export const LinkButton: React.FC = ({ children }) => {
+export const LinkButton: React.FC = ({ children, ...props }) => {
   return <Container>{children}</Container>;
 };

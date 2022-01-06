@@ -36,7 +36,16 @@ const SwiperContainer = styled(Swiper)`
   .swiper-button-next {
     right: 0;
   }
+
+  .swiper-slide {
+    width: auto;
+  }
 `;
+
+const YoutubeContainer = styled.div`
+  width: 200px;
+`;
+
 interface SlideYoutubeProps {
   data?: Videos;
 }
@@ -47,34 +56,22 @@ const SlideYoutube: React.FC<SlideYoutubeProps> = ({ data }) => {
       <SwiperContainer
         loop={false}
         navigation={true}
-        slidesPerView={1}
-        breakpoints={{
-          "320": {
-            slidesPerView: 2,
-          },
-          "640": {
-            slidesPerView: 3,
-          },
-          "1024": {
-            slidesPerView: 4,
-          },
-          "1200": {
-            slidesPerView: 5,
-          },
-        }}
+        slidesPerView={"auto"}
         spaceBetween={10}
       >
         {data.results.map((item) => (
           <SwiperSlide key={item.id}>
-            <iframe
-              width="100%"
-              height="100%"
-              src={`https://www.youtube.com/embed/${item.key}`}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
+            <YoutubeContainer>
+              <iframe
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/${item.key}`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </YoutubeContainer>
           </SwiperSlide>
         ))}
       </SwiperContainer>

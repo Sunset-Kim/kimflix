@@ -85,6 +85,12 @@ export const Theme: DefaultTheme = {
         padding: 8px 16px;
         border-radius: 16px;
       `,
+      sm: css`
+        ${baseButton}
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+      `,
     },
     style: {
       primary: css`

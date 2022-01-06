@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import SlidePoster from "./slide-poster";
 import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import { createImgPath } from "Utils/imgpath";
 import { IMovie, ITV } from "services/api";
 import { LinkButton } from "components/button";
@@ -122,7 +122,7 @@ const ContentsContainer = styled.div<{ isBackground: Boolean }>`
   position: relative;
   z-index: 11;
   margin: 0 2rem;
-  /* margin-top: ${(props) => (props.isBackground ? "-100px" : "")}; */
+  margin-top: ${(props) => (props.isBackground ? "-100px" : "")};
   margin-bottom: 60px;
 `;
 const SlideContainer = styled.div``;
@@ -149,7 +149,6 @@ const Section: React.FC<SectionProps> = ({
   const [index, setIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const isMovie = data && "title" in data[0] ? true : false;
-  const navigate = useNavigate();
 
   const onHover = (index: number) => {
     setIndex(index);

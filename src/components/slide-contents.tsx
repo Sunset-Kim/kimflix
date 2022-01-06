@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import { Season, Company, ITV, IMovie } from "services/api";
@@ -34,10 +34,27 @@ interface SlideContentsProps {
 
 const SlideContents: React.FC<SlideContentsProps> = ({ data }) => {
   const refContainer = useRef(null);
+  const [isDrag, setIsDrag] = useState(false);
+
+  const onDragStart = () => {
+    setIsDrag(true);
+  };
+
+  const onDragEnd = () => {
+    if (!isDrag) return;
+    setTimeout(() => {
+      setIsDrag(false);
+    }, 1500);
+  };
 
   return data ? (
     <SlideContainer ref={refContainer}>
-      <SlideWrapper drag="x" dragConstraints={refContainer}>
+      <SlideWrapper
+        drag="x"
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        dragConstraints={refContainer}
+      >
         {data.type === "company"
           ? data.results.map((item) => (
               <Slide key={item.id}>
@@ -55,6 +72,7 @@ const SlideContents: React.FC<SlideContentsProps> = ({ data }) => {
                 {
                   <SlideSimilar
                     data={"title" in item ? (item as IMovie) : (item as ITV)}
+                    isDrag={isDrag}
                   />
                 }
               </Slide>

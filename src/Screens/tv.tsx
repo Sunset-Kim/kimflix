@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet";
 import Loading from "components/loading";
 import Section from "components/section";
 import Message from "components/message";
-import { useQuery } from "react-query";
+import { useInfiniteQuery, useQuery } from "react-query";
 import { AnimatePresence } from "framer-motion";
 import Popup from "components/popup";
 import { useMatch } from "react-router-dom";
@@ -19,42 +19,44 @@ const TV = () => {
     isLoading: popularLoading,
     data: popularData,
     isError: popularError,
-  } = useQuery<IGetTV>(["tv", "popular"], () => tvApi.popular());
+  } = useInfiniteQuery<IGetTV>(["tv", "popular"], () => tvApi.popular());
 
   const {
     isLoading: topRatedLoading,
     data: topRatedData,
     isError: topRatedError,
-  } = useQuery<IGetTV>(["tv", "topRated"], () => tvApi.topRated());
+  } = useInfiniteQuery<IGetTV>(["tv", "topRated"], () => tvApi.topRated());
 
   const {
     isLoading: airingTodayLoading,
     data: airingTodayData,
     isError: airingTodayError,
-  } = useQuery<IGetTV>(["tv", "airingToday"], () => tvApi.airingToday());
+  } = useInfiniteQuery<IGetTV>(["tv", "airingToday"], () =>
+    tvApi.airingToday()
+  );
 
   const isLoading = popularLoading && topRatedLoading && airingTodayLoading;
   const isError = popularError && topRatedError && airingTodayError;
 
-  const filteredTopRateData = topRatedData?.results.filter((tv) => {
+  const filteredTopRateData = topRatedData?.pages[0].results.filter((tv) => {
     const id = tv.id;
-    const idArray = popularData?.results.map((item) => item.id);
+    const idArray = popularData?.pages[0].results.map((item) => item.id);
     if (!idArray?.includes(id)) return tv;
   });
 
-  const filteredAiringToday = airingTodayData?.results.filter((tv) => {
+  const filteredAiringToday = airingTodayData?.pages[0].results.filter((tv) => {
     const id = tv.id;
-    const idArray = popularData?.results.map((item) => item.id);
+    const idArray = popularData?.pages[0].results.map((item) => item.id);
     if (!idArray?.includes(id)) return tv;
   });
 
   const clickedTV =
     TVIdMatch?.params.id &&
-    popularData?.results &&
-    topRatedData?.results &&
-    airingTodayData?.results &&
-    popularData.results
-      .concat(topRatedData.results, airingTodayData.results)
+    popularData?.pages[0].results &&
+    topRatedData?.pages[0].results &&
+    airingTodayData?.pages[0].results &&
+    popularData.pages[0].results
+      .concat(topRatedData.pages[0].results, airingTodayData.pages[0].results)
       .find((tv) => tv.id + "" === TVIdMatch.params.id);
 
   return (
@@ -66,20 +68,20 @@ const TV = () => {
         <Loading></Loading>
       ) : (
         <Container>
-          {popularData?.results && (
+          {popularData?.pages[0].results && (
             <Section
               title="Popular"
-              data={popularData.results}
+              data={popularData.pages[0].results}
               background={true}
             />
           )}
 
           {filteredTopRateData && (
-            <Section title="Top Rate" data={filteredTopRateData} />
+            <Section title="Top Rated" data={filteredTopRateData} />
           )}
 
           {filteredAiringToday && (
-            <Section title="airingToday" data={filteredAiringToday} />
+            <Section title="Airing Today" data={filteredAiringToday} />
           )}
           {isError && <Message text={"error"} color="crimson"></Message>}
 

@@ -71,29 +71,35 @@ const infoVariants: Variants = {
 
 interface SlidePosterProps {
   data: IMovie | ITV;
-  index: number;
-  isMovie: boolean;
-  isDrag: boolean;
+  index?: number;
+  isDrag?: boolean;
+  isPopup?: boolean;
   onHover?: (i: number) => void;
 }
 
 const SlidePoster: React.FC<SlidePosterProps> = ({
   data,
   index,
-  isMovie = false,
   isDrag,
+  isPopup = false,
   onHover,
 }) => {
   const navigate = useNavigate();
 
+  const isMovie = Object.keys(data).includes("title") ? true : false;
+
   const onHoverStart = () => {
-    if (!onHover) return;
+    if (!onHover || !index) return;
     onHover(index);
   };
 
   const onSlideClick = (movieID: number) => {
     if (isDrag) return;
-    navigate(`${movieID}`);
+    if (isPopup) {
+      navigate(`${movieID}`);
+    } else {
+      navigate(`/${isMovie ? "movie" : "tv"}/detail/${movieID}`);
+    }
   };
 
   return (
@@ -119,7 +125,6 @@ const SlidePoster: React.FC<SlidePosterProps> = ({
       <InfoContainer variants={infoVariants}>
         <h3>{(data as IMovie).title || (data as ITV).name}</h3>
         <ul>
-          {}
           <li>{Dayjs((data as IMovie).release_date).get("year")}</li>
           <span>•</span>
           <li>{"⭐️" + data.vote_average + " / 10"}</li>

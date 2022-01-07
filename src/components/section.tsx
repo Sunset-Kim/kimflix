@@ -218,9 +218,9 @@ const Section: React.FC<SectionProps> = ({
             <Title>
               <h2>{title}</h2>
               <Link
-                to={`${isMovie ? "movie" : "tv"}/list/${title
-                  .toLowerCase()
-                  .replace(" ", "")}`}
+                to={`/${isMovie ? "movie" : "tv"}/list/${title
+                  .replace(" ", "")
+                  .toLowerCase()}`}
               >
                 expand more
               </Link>
@@ -243,9 +243,9 @@ const Section: React.FC<SectionProps> = ({
                     <SlidePoster
                       key={movie.id}
                       index={i}
+                      isPopup
                       isDrag={isDragging}
                       data={movie}
-                      isMovie={isMovie}
                       onHover={onHover}
                     />
                   ))}

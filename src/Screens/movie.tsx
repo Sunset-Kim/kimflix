@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Section from "components/section";
 import Loading from "components/loading";
 import Message from "components/message";
-import { useQuery } from "react-query";
+import { useInfiniteQuery, useQuery } from "react-query";
 import { AnimatePresence } from "framer-motion";
 import { useMatch } from "react-router-dom";
 import Popup from "components/popup";
@@ -18,7 +18,7 @@ const Movie = () => {
     isLoading: nowPlayingLoading,
     data: nowPlayingData,
     isError: nowPlayingError,
-  } = useQuery<IGetMovie>(["movies", "nowPlaying"], () =>
+  } = useInfiniteQuery<IGetMovie>(["movies", "list", "nowplaying"], () =>
     moviesApi.nowPlaying()
   );
 
@@ -26,35 +26,48 @@ const Movie = () => {
     isLoading: popularLoading,
     data: popularData,
     isError: popularError,
-  } = useQuery<IGetMovie>(["movies", "popular"], () => moviesApi.popular());
+  } = useInfiniteQuery<IGetMovie>(["movies", "list", "popular"], () =>
+    moviesApi.popular()
+  );
 
   const {
     isLoading: upComingLoading,
     data: upComingData,
     isError: upComingError,
-  } = useQuery<IGetMovie>(["movies", "upComing"], () => moviesApi.upComing());
+  } = useInfiniteQuery<IGetMovie>(["movies", "list", "upcoming"], () =>
+    moviesApi.upComing()
+  );
 
   const isLoading = nowPlayingLoading || popularLoading || upComingLoading;
   const isError = nowPlayingError || popularError || upComingError;
   const DATA =
-    popularData?.results &&
-    upComingData?.results &&
-    nowPlayingData?.results &&
-    popularData.results.concat(upComingData.results, nowPlayingData.results);
+    popularData?.pages[0].results &&
+    upComingData?.pages[0].results &&
+    nowPlayingData?.pages[0].results &&
+    popularData.pages[0].results.concat(
+      upComingData.pages[0].results,
+      nowPlayingData.pages[0].results
+    );
   const clickedMovie =
     MovieIdMatch?.params.id &&
     DATA &&
     DATA.find((movie) => movie.id + "" === MovieIdMatch.params.id);
 
-  const filteredNowPlaying = nowPlayingData?.results.filter((movie) => {
-    const id = movie.id;
-    const popularIDArray = popularData?.results.map((movie) => movie.id);
-    if (!popularIDArray?.includes(id)) return movie;
-  });
+  const filteredNowPlaying = nowPlayingData?.pages[0].results.filter(
+    (movie) => {
+      const id = movie.id;
+      const popularIDArray = popularData?.pages[0].results.map(
+        (movie) => movie.id
+      );
+      if (!popularIDArray?.includes(id)) return movie;
+    }
+  );
 
-  const filteredUpcoming = upComingData?.results.filter((movie) => {
+  const filteredUpcoming = upComingData?.pages[0].results.filter((movie) => {
     const id = movie.id;
-    const popularIDArray = popularData?.results.map((movie) => movie.id);
+    const popularIDArray = popularData?.pages[0].results.map(
+      (movie) => movie.id
+    );
     if (!popularIDArray?.includes(id)) return movie;
   });
 
@@ -70,7 +83,7 @@ const Movie = () => {
           {popularData && (
             <Section
               title="Popular"
-              data={popularData.results}
+              data={popularData.pages[0].results}
               background={true}
             />
           )}

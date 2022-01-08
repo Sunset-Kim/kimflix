@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { IMovie, ITV } from "services/api";
 import styled from "styled-components";
 import { createImgPath } from "Utils/imgpath";
@@ -8,8 +8,12 @@ const Container = styled.div`
   position: relative;
   display: block;
   width: 150px;
+  padding-top: 150%;
 
   img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     pointer-events: none;
   }
@@ -42,8 +46,11 @@ interface SlideSimilarProps {
   isDrag: boolean;
 }
 const SlideSimilar: React.FC<SlideSimilarProps> = ({ data, isDrag }) => {
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const isMovie = "title" in data ? true : false;
+
+  const onLoad = () => setLoading(false);
 
   const onPushDetail = () => {
     if (isDrag) return;
@@ -54,7 +61,12 @@ const SlideSimilar: React.FC<SlideSimilarProps> = ({ data, isDrag }) => {
   return (
     <Container onClick={onPushDetail}>
       <img
-        src={createImgPath(data.poster_path, false)}
+        src={
+          loading
+            ? require("assets/spinner.svg").default
+            : createImgPath(data.poster_path, "w300")
+        }
+        onLoad={onLoad}
         alt={isMovie ? (data as IMovie).title : (data as ITV).name}
       />
       <Info>

@@ -14,11 +14,11 @@ const Container = styled.div`
   padding-top: 150%;
 `;
 
-const Image = styled.div<{ bgUrl: string }>`
+const Image = styled.div<{ posterImg: string }>`
   position: absolute;
   top: 0;
   left: 0;
-  background-image: url("${(props) => createImgPath(props.bgUrl)}");
+  background-image: url("${(props) => createImgPath(props.posterImg, "w300")}");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -27,14 +27,14 @@ const Image = styled.div<{ bgUrl: string }>`
   border-radius: 10px;
 `;
 
-const ImageBottom = styled.div<{ bgUrl: string }>`
+const ImageBottom = styled.div<{ posterImg: string }>`
   position: absolute;
   top: 80%;
   left: 0;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  background-image: url("${(props) => createImgPath(props.bgUrl)}");
+  background-image: url("${(props) => createImgPath(props.posterImg, "w300")}");
   width: 100%;
   height: 100%;
   border-radius: 10px;
@@ -49,10 +49,12 @@ interface MainPosterProps {
 
 const MainPoster: React.FC<MainPosterProps> = ({ isMovie, movie }) => {
   return (
-    <PosterLink to={isMovie ? `/movie/${movie.id}` : `/show/${movie.id}`}>
+    <PosterLink
+      to={isMovie ? `/movie/detail/${movie.id}` : `/tv/detail/${movie.id}`}
+    >
       <Container>
-        <Image bgUrl={movie.poster_path} />
-        <ImageBottom bgUrl={movie.poster_path} />
+        <Image posterImg={movie.poster_path} />
+        <ImageBottom posterImg={movie.poster_path} />
       </Container>
     </PosterLink>
   );

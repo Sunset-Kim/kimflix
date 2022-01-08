@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Section from "components/section";
 import Loading from "components/loading";
 import Message from "components/message";
-import { useInfiniteQuery, useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 import { AnimatePresence } from "framer-motion";
 import { useMatch } from "react-router-dom";
 import Popup from "components/popup";

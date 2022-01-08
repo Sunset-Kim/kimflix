@@ -53,10 +53,10 @@ const BtnGrop = styled.div`
   }
 `;
 
-const PopupTop = styled.div<{ imgPath: string }>`
+const PopupTop = styled.div<{ backImg: string }>`
   position: relative;
   padding-top: 45%;
-  background-image: url(${({ imgPath }) => createImgPath(imgPath)});
+  background-image: url(${({ backImg }) => createImgPath(backImg, "w500")});
 `;
 
 const PopupOverlay = styled.div`
@@ -176,7 +176,7 @@ const Popup: React.FC<PopupProps> = ({ data }) => {
                   </BtnClose>
                 </BtnGrop>
 
-                <PopupTop imgPath={data.backdrop_path}>
+                <PopupTop backImg={data.backdrop_path}>
                   <PopupOverlay />
                 </PopupTop>
                 <PopupBottom>

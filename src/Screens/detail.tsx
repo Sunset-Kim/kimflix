@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Loading from "components/loading";
 import { Helmet } from "react-helmet";
@@ -15,6 +15,7 @@ import SlideContents from "components/slide-contents";
 import SlideYoutube from "components/slide-youtube";
 import { useMatch } from "react-router-dom";
 import { useQuery } from "react-query";
+import { createImgPath } from "Utils/imgpath";
 
 const Container = styled.div`
   position: relative;
@@ -52,13 +53,11 @@ const ContentImg = styled.div`
   margin-right: 2rem;
 `;
 
-const Cover = styled.div<{ img: string }>`
+const Cover = styled.img`
   width: 100%;
-  padding-top: 150%;
-  background-position: center top;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url(${(props) => props.img});
+  max-width: 640px;
+  object-fit: cover;
+  object-position: center top;
 `;
 
 const Title = styled.div`
@@ -103,6 +102,9 @@ const Detail: React.FC = () => {
   const isMovie = location?.params.category === "movie" ? true : false;
   const id = Number(location?.params.id);
 
+  // state
+  const [imgLoading, setImgLoading] = useState(true);
+
   // # react-query
   // ## detail query
   const { isLoading, data, isError } = useQuery<MovieDetail | TvDetail>(
@@ -118,6 +120,9 @@ const Detail: React.FC = () => {
     isMovie ? ["movie", "similar", id] : ["tv", "similar", id],
     isMovie ? () => moviesApi.movieSimilar(id) : () => tvApi.tvSimilar(id)
   );
+
+  // func
+  const onLoad = () => setImgLoading(false);
 
   return (
     <>
@@ -144,11 +149,17 @@ const Detail: React.FC = () => {
               <Contents>
                 <ContentImg>
                   <Cover
-                    img={
-                      data.poster_path
-                        ? `https://image.tmdb.org/t/p/original/${data.poster_path}`
-                        : require("assets/notfound.jpeg").default
+                    src={
+                      imgLoading
+                        ? require("assets/spinner.svg").default
+                        : createImgPath(data.poster_path, "w500")
                     }
+                    alt={
+                      isMovie
+                        ? (data as MovieDetail).title
+                        : (data as TvDetail).name
+                    }
+                    onLoad={onLoad}
                   />
                 </ContentImg>
 
@@ -188,9 +199,11 @@ const Detail: React.FC = () => {
                           },
                           index: number
                         ) =>
-                          index === data.genres.length - 1
-                            ? genre.name
-                            : `${genre.name} / `
+                          index === data.genres.length - 1 ? (
+                            <span key={genre.id}>{genre.name}</span>
+                          ) : (
+                            <span key={genre.id}>{`${genre.name} / `}</span>
+                          )
                       )}
                     </Info>
 
@@ -260,7 +273,7 @@ const Detail: React.FC = () => {
                       }}
                     />
                   ) : (
-                    "유사한 작품은 없다"
+                    "유사한 작품이 없습니다!"
                   )}
                 </DetailTab>
               }

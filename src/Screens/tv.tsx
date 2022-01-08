@@ -19,19 +19,23 @@ const TV = () => {
     isLoading: popularLoading,
     data: popularData,
     isError: popularError,
-  } = useInfiniteQuery<IGetTV>(["tv", "popular"], () => tvApi.popular());
+  } = useInfiniteQuery<IGetTV>(["tv", "list", "popular"], () =>
+    tvApi.popular()
+  );
 
   const {
     isLoading: topRatedLoading,
     data: topRatedData,
     isError: topRatedError,
-  } = useInfiniteQuery<IGetTV>(["tv", "topRated"], () => tvApi.topRated());
+  } = useInfiniteQuery<IGetTV>(["tv", "list", "toprated"], () =>
+    tvApi.topRated()
+  );
 
   const {
     isLoading: airingTodayLoading,
     data: airingTodayData,
     isError: airingTodayError,
-  } = useInfiniteQuery<IGetTV>(["tv", "airingToday"], () =>
+  } = useInfiniteQuery<IGetTV>(["tv", "list", "airingtoday"], () =>
     tvApi.airingToday()
   );
 
@@ -83,6 +87,7 @@ const TV = () => {
           {filteredAiringToday && (
             <Section title="Airing Today" data={filteredAiringToday} />
           )}
+
           {isError && <Message text={"error"} color="crimson"></Message>}
 
           <AnimatePresence>

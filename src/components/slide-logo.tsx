@@ -20,7 +20,7 @@ interface SlideLogoProps {
 const SlideLogo: React.FC<SlideLogoProps> = ({ data }) => {
   return (
     <Container>
-      <img src={createImgPath(data.logo_path, false, "w300")} alt={data.name} />
+      <img src={createImgPath(data.logo_path, "w300")} alt={data.name} />
     </Container>
   );
 };

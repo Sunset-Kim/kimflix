@@ -1,13 +1,7 @@
 export const createImgPath = (
   id: string,
-  isFull?: boolean,
-  option?: "w300"
+  size: "w300" | "w500" | "original" = "w300"
 ) => {
-  if (isFull) {
-    return `https://image.tmdb.org/t/p/original${id}`;
-  } else if (option) {
-    return `https://image.tmdb.org/t/p/${option}${id}`;
-  } else {
-    return `https://image.tmdb.org/t/p/w500${id}`;
-  }
+  if (id) return `https://image.tmdb.org/t/p/${size}${id}`;
+  else return require("assets/notfound.jpeg").default;
 };

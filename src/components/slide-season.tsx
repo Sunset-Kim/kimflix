@@ -52,7 +52,7 @@ interface SlideSeasonProps {
 const SlideSeason: React.FC<SlideSeasonProps> = ({ data }) => {
   return (
     <Container variants={InfoVariants}>
-      <img src={createImgPath(data.poster_path, false)} alt={data.name} />
+      <img src={createImgPath(data.poster_path, "w300")} alt={data.name} />
       <Info>
         <h3>{data.name}</h3>
         <span>{data.air_date}</span>

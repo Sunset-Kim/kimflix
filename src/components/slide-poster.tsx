@@ -1,10 +1,9 @@
 import React from "react";
-import { IMovie, ITV } from "services/api";
+import { IMovie, IPerson, ITV } from "services/api";
 import styled from "styled-components";
-import { createImgPath } from "Utils/imgpath";
 import { motion, Variants } from "framer-motion";
-import Dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import Poster from "./poster";
 
 const Container = styled(motion.div)`
   position: relative;
@@ -12,37 +11,6 @@ const Container = styled(motion.div)`
   margin: 0 5px;
   width: 200px;
   flex-shrink: 0;
-`;
-
-const Image = styled.div<{ bgUrl: string | null }>`
-  background-image: ${(props) =>
-    props.bgUrl ? `url(${createImgPath(props.bgUrl)})` : ""};
-  background-size: cover;
-  background-position: center top;
-  width: 100%;
-  padding-top: 150%;
-`;
-
-const InfoContainer = styled(motion.div)`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 10px 5px;
-  background: rgba(0, 0, 0, 0.6);
-  opacity: 0;
-
-  h3 {
-    font-size: 14px;
-    margin-bottom: 0.3em;
-  }
-
-  ul {
-    display: flex;
-    font-size: 12px;
-    span {
-      color: rgba(255, 255, 255, 0.6);
-    }
-  }
 `;
 
 const boxVariants: Variants = {
@@ -63,14 +31,8 @@ const boxVariants: Variants = {
   },
 };
 
-const infoVariants: Variants = {
-  hover: {
-    opacity: 1,
-  },
-};
-
 interface SlidePosterProps {
-  data: IMovie | ITV;
+  data: IMovie | ITV | IPerson;
   index?: number;
   isDrag?: boolean;
   isPopup?: boolean;
@@ -84,21 +46,31 @@ const SlidePoster: React.FC<SlidePosterProps> = ({
   isPopup = false,
   onHover,
 }) => {
+  // hook
   const navigate = useNavigate();
 
+  // custom var
   const isMovie = Object.keys(data).includes("title") ? true : false;
 
+  // callback func
+  /*
+   * background 변경위해 index 상위 전달
+   */
   const onHoverStart = () => {
     if (!onHover || !index) return;
     onHover(index);
   };
 
+  /*
+   * 1. 드래그 중에 push 방지
+   * 2. popup이 있으면 popup으로 popup이 없으면 detail로 변경
+   */
   const onSlideClick = (movieID: number) => {
     if (isDrag) return;
-    if (isPopup) {
-      navigate(`${movieID}`);
-    } else {
-      navigate(`/${isMovie ? "movie" : "tv"}/detail/${movieID}`);
+    if (!Object.keys(data).includes("gender")) {
+      isPopup
+        ? navigate(`${movieID}`)
+        : navigate(`/${isMovie ? "movie" : "tv"}/detail/${movieID}`);
     }
   };
 
@@ -115,21 +87,7 @@ const SlidePoster: React.FC<SlidePosterProps> = ({
         duration: 0.5,
       }}
     >
-      <Image
-        bgUrl={
-          data.poster_path
-            ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
-            : require("../assets/notfound.jpeg").default
-        }
-      />
-      <InfoContainer variants={infoVariants}>
-        <h3>{(data as IMovie).title || (data as ITV).name}</h3>
-        <ul>
-          <li>{Dayjs((data as IMovie).release_date).get("year")}</li>
-          <span>•</span>
-          <li>{"⭐️" + data.vote_average + " / 10"}</li>
-        </ul>
-      </InfoContainer>
+      <Poster data={data}></Poster>
     </Container>
   );
 };

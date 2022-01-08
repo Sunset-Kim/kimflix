@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import SlidePoster from "./slide-poster";
-import { Link, useNavigate } from "react-router-dom";
-import { motion, useMotionValue } from "framer-motion";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { createImgPath } from "Utils/imgpath";
 import { IMovie, ITV } from "services/api";
 import { LinkButton } from "components/button";
@@ -53,10 +53,10 @@ const Overlay = styled.div`
   );
 `;
 
-const BackgroundImg = styled(Overlay)<{ bgImg: string | null }>`
+const BackgroundImg = styled(Overlay)<{ bgImg: string }>`
   z-index: -12;
-  background-image: ${(props) =>
-    props.bgImg ? `url(${createImgPath(props.bgImg, true)})` : ""};
+  background-image: ${({ bgImg }) =>
+    `url(${createImgPath(bgImg, "original")})`};
   background-size: cover;
   background-repeat: no-repeat;
   background-position: left top;

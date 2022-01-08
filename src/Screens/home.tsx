@@ -11,7 +11,7 @@ import "swiper/swiper-bundle.min.css";
 import "swiper/swiper.min.css";
 import "swiper/components/effect-coverflow/effect-coverflow.min.css";
 import MainPoster from "components/main-poster";
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 
 SwiperCore.use([EffectCoverflow]);
 
@@ -59,8 +59,8 @@ const SlideContainer = styled(Swiper)`
 `;
 
 const Home: React.FC = (props) => {
-  const { isLoading, data, isError } = useQuery<IGetMovie>(
-    ["movies", "popular"],
+  const { isLoading, data, isError } = useInfiniteQuery<IGetMovie>(
+    ["movies", "list", "popular"],
     () => moviesApi.popular()
   );
 
@@ -77,7 +77,7 @@ const Home: React.FC = (props) => {
         </Title>
       }
 
-      {data?.results && data.results.length > 0 && (
+      {data?.pages[0].results && data.pages[0].results.length > 0 && (
         <SlideContainer
           effect={"coverflow"}
           loop={true}
@@ -106,7 +106,7 @@ const Home: React.FC = (props) => {
             slideShadows: false,
           }}
         >
-          {data.results.map((movie: any) => (
+          {data.pages[0].results.map((movie: any) => (
             <SwiperSlide key={movie.id}>
               <MainPoster movie={movie} isMovie={true} />
             </SwiperSlide>

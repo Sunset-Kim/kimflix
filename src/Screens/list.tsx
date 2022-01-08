@@ -4,7 +4,7 @@ import { tvApi, moviesApi, IGetTV, IGetMovie } from "services/api";
 import SlidePoster from "components/slide-poster";
 import { useMatch } from "react-router-dom";
 import { useInfiniteQuery } from "react-query";
-import _, { toLower } from "lodash";
+import { result, toLower, uniqBy, uniqueId } from "lodash";
 
 const Wrapper = styled.div`
   padding: 110px 20px 0;
@@ -53,10 +53,10 @@ const List: React.FC = () => {
   };
 
   const {
-    data: infData,
+    data: listData,
     fetchNextPage,
-    isFetching,
     hasNextPage,
+    isLoading,
   } = useInfiniteQuery(
     [isMovie ? "movies" : "tv", "list", category],
     ({ pageParam = 1 }) => getApi(category)(pageParam),
@@ -70,16 +70,27 @@ const List: React.FC = () => {
       },
     }
   );
+
+  const filteredData = uniqBy(
+    listData?.pages
+      .map((page) => page.results)
+      .reduce((acc, cur) => [...acc, ...cur]),
+    "id"
+  );
   // ref
   const loader = useRef<HTMLDivElement>();
 
   // intersection observer
-  const handleObserver = useCallback((entries) => {
-    const target = entries[0];
-    if (target.isIntersecting && !hasNextPage) {
-      fetchNextPage();
-    }
-  }, []);
+  const handleObserver = useCallback(
+    (entries: any) => {
+      const target = entries[0];
+
+      if (target.isIntersecting && hasNextPage) {
+        fetchNextPage();
+      }
+    },
+    [isLoading]
+  );
 
   useEffect(() => {
     const option = {
@@ -93,26 +104,26 @@ const List: React.FC = () => {
     return () => {
       observer.disconnect();
     };
-  }, [match?.pathname]);
+  }, [handleObserver]);
 
-  return (
+  return !isLoading ? (
     <Wrapper>
       <Title>
         {isMovie ? "Movie" : "TV"} / {category}
       </Title>
       <Container>
-        {infData?.pages.map((page) =>
-          page.results.map((item) => (
-            <SlidePoster key={item.id} data={item} index={1} />
-          ))
-        )}
+        {filteredData?.map((item) => (
+          <SlidePoster key={item.id} data={item} index={1} />
+        ))}
       </Container>
-      {
+      {!isLoading && (
         <Loader ref={loader as any}>
           {!hasNextPage && "모든 정보를 다 받아왔습니다!"}
         </Loader>
-      }
+      )}
     </Wrapper>
+  ) : (
+    <></>
   );
 };
 

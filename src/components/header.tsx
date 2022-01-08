@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled, { useTheme } from "styled-components";
 import {
   motion,
   Variants,
   useAnimation,
   useViewportScroll,
+  AnimatePresence,
 } from "framer-motion";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 const Container = styled(motion.header)`
   color: white;
@@ -74,7 +76,7 @@ const SLink = styled(Link)`
   font-size: 15px;
 `;
 
-const Search = styled.div`
+const Search = styled.form`
   margin-left: auto;
   justify-self: flex-end;
   position: relative;
@@ -90,6 +92,7 @@ const Input = styled(motion.input)`
   transform-origin: right center;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid white;
+  color: white;
 
   &::placeholder {
     color: rgba(255, 255, 255, 0.7);
@@ -132,10 +135,11 @@ const headerVariants: Variants = {
 };
 
 const Header = () => {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { color } = useTheme();
   const headerAnimation = useAnimation();
   const inputAnimation = useAnimation();
+  const { register, handleSubmit, formState } = useForm();
   const [searchOpen, setSearchOpen] = useState(false);
   const { scrollY } = useViewportScroll();
 
@@ -147,6 +151,10 @@ const Header = () => {
     }
 
     setSearchOpen((prev) => !prev);
+  };
+
+  const onSearch: SubmitHandler<{ query: string }> = ({ query }) => {
+    navigate(`/search?query=${query}`);
   };
 
   useEffect(() => {
@@ -188,28 +196,29 @@ const Header = () => {
         </SLink>
 
         {/* nav */}
-        <Nav>
-          <List>
-            <Item current={pathname === "/movie"}>
-              <SLink to="/movie">Movies</SLink>
-              {pathname.includes("/movie") ? <Circle layoutId="path" /> : null}
-            </Item>
-            <Item current={pathname === "/tv"}>
-              <SLink to="/tv">TV</SLink>
-              {pathname.includes("/tv") ? <Circle layoutId="path" /> : null}
-            </Item>
-            <Item current={pathname === "/search"}>
-              <SLink to="/search">Search</SLink>
-              {pathname === "/search" ? <Circle layoutId="path" /> : null}
-            </Item>
-          </List>
-        </Nav>
+        <AnimatePresence>
+          <Nav>
+            <List>
+              <Item current={pathname === "/movie"}>
+                <SLink to="/movie">Movies</SLink>
+                {pathname?.includes("/movie") ? (
+                  <Circle layoutId="path" />
+                ) : null}
+              </Item>
+              <Item current={pathname === "/tv"}>
+                <SLink to="/tv">TV</SLink>
+                {pathname?.includes("/tv") ? <Circle layoutId="path" /> : null}
+              </Item>
+            </List>
+          </Nav>
+        </AnimatePresence>
       </Col>
 
       {/* 2열 : 검색 */}
       <Col>
-        <Search onClick={toggleSearch}>
+        <Search onSubmit={handleSubmit(onSearch)}>
           <Input
+            {...register("query", { required: true, minLength: 1 })}
             animate={inputAnimation}
             initial={{ scaleX: 0 }}
             transition={{
@@ -218,6 +227,7 @@ const Header = () => {
             placeholder="Search for movie or tvShow"
           />
           <Icon
+            onClick={toggleSearch}
             animate={{
               x: searchOpen ? -200 : 0,
             }}

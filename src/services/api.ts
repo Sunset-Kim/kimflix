@@ -324,18 +324,35 @@ export const tvApi = {
     api.get(`tv/${id}/similar`).then(responseBody),
 };
 
-export const searchApi = {
-  multi: (query: string) =>
-    api.get("search/multi", {
-      params: {
-        query,
-      },
-    }),
+export interface IPerson {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for: object;
+  known_for_department: string;
+  media_type: string;
+  name: string;
+  popularity: number;
+  profile_path: string;
+}
 
+export const searchApi = {
+  multi: (query?: string) => {
+    if (!query) return;
+    return api
+      .get("search/multi", {
+        params: {
+          query,
+        },
+      })
+      .then(responseBody);
+  },
   keyword: (query: string) =>
-    api.get("search/keyword", {
-      params: {
-        query,
-      },
-    }),
+    api
+      .get("search/keyword", {
+        params: {
+          query,
+        },
+      })
+      .then(responseBody),
 };

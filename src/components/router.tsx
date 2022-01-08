@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Home from "Screens/home";
 import Search from "Screens/search";
 import Movie from "Screens/movie";
@@ -23,10 +23,11 @@ const Router = () => {
           <Route path="movie/*" element={<Movie />} />
           <Route path="tv/*" element={<TV />} />
           <Route path=":category/detail/:id" element={<Detail />} />
-          {/* <Route path="/movie/:id" element={<Detail />}></Route> */}
-          {/* <Route path="/show/:id" element={<Detail />}></Route> */}
-          {/* <Route path="/movie/list/:list" element={<List />}></Route> */}
-          {/* <Route path="/tv/list/:list" element={<List />}></Route> */}
+          <Route path=":category/list/:list" element={<List />}></Route>
+          <Route path="search" element={<Search />} />
+
+          {/* router redirection  */}
+          <Route path="*" element={<Navigate to={"/"} />} />
         </Routes>
       </>
     </BrowserRouter>

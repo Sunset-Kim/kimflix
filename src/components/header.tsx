@@ -139,7 +139,7 @@ const Header = () => {
   const { pathname } = useLocation();
   const headerAnimation = useAnimation();
   const inputAnimation = useAnimation();
-  const { register, handleSubmit, formState } = useForm();
+  const { register, handleSubmit } = useForm();
   const [searchOpen, setSearchOpen] = useState(false);
   const { scrollY } = useViewportScroll();
 
@@ -219,8 +219,8 @@ const Header = () => {
         <Search onSubmit={handleSubmit(onSearch)}>
           <Input
             {...register("query", { required: true, minLength: 1 })}
-            animate={inputAnimation}
             initial={{ scaleX: 0 }}
+            animate={inputAnimation}
             transition={{
               type: "linear",
             }}

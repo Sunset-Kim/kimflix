@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import { Season, Company, ITV, IMovie } from "services/api";
 import SlideLogo from "./slide-logo";
 import SlideSeason from "./slide-season";
@@ -33,7 +33,9 @@ interface SlideContentsProps {
 }
 
 const SlideContents: React.FC<SlideContentsProps> = ({ data }) => {
+  // darg관련
   const refContainer = useRef(null);
+  const x = useMotionValue(0);
   const [isDrag, setIsDrag] = useState(false);
 
   const onDragStart = () => {
@@ -51,6 +53,7 @@ const SlideContents: React.FC<SlideContentsProps> = ({ data }) => {
     <SlideContainer ref={refContainer}>
       <SlideWrapper
         drag="x"
+        style={{ x }}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
         dragConstraints={refContainer}

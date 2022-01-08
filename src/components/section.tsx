@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import SlidePoster from "./slide-poster";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import { createImgPath } from "Utils/imgpath";
 import { IMovie, ITV } from "services/api";
 import { LinkButton } from "components/button";
@@ -146,10 +146,13 @@ const Section: React.FC<SectionProps> = ({
   data,
   background = false,
 }) => {
+  // useState
   const slideRef = useRef(null);
   const [index, setIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const isMovie = data && "title" in data[0] ? true : false;
+
+  const x = useMotionValue(0);
 
   const onHover = (index: number) => {
     setIndex(index);
@@ -235,6 +238,7 @@ const Section: React.FC<SectionProps> = ({
             <SlideContainer ref={slideRef}>
               <SlideWrapper
                 drag="x"
+                style={{ x }}
                 dragConstraints={slideRef}
                 onDragStart={onDragStart}
                 onDragEnd={onDrageEnd}

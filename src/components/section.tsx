@@ -33,7 +33,8 @@ const Title = styled(motion.div)`
 
 const BackgroundContainer = styled.div`
   position: relative;
-  height: 80vh;
+  min-height: 80vh;
+  height: auto;
   overflow: hidden;
   background: ${(props) => props.theme.color.background.default};
   z-index: 1;
@@ -64,16 +65,16 @@ const BackgroundImg = styled(Overlay)<{ bgImg: string }>`
 `;
 
 const BackgroundText = styled.div`
-  padding: 2rem;
+  padding: 0 30px;
   position: absolute;
   width: 100%;
-  top: 40%;
+  top: 30%;
   left: 0;
   z-index: 1;
   min-width: 280px;
 
   h3 {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     margin-bottom: 0.5em;
   }
@@ -87,9 +88,9 @@ const BackgroundText = styled.div`
   }
 
   p {
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.4em;
-    margin-bottom: 2em;
+    margin-bottom: 1em;
   }
 
   /* tablet */
@@ -122,7 +123,7 @@ const ContentsContainer = styled.div<{ isBackground: Boolean }>`
   position: relative;
   z-index: 11;
   margin: 0 2rem;
-  margin-top: ${(props) => (props.isBackground ? "-100px" : "")};
+  /* margin-top: ${(props) => (props.isBackground ? "-100px" : "")}; */
   margin-bottom: 60px;
 `;
 const SlideContainer = styled.div``;

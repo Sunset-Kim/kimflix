@@ -30,7 +30,7 @@ const BackDrop = styled.div<{ img: string }>`
   width: 100%;
   height: 100vh;
   background-image: url(${(props) => props.img});
-  background-position: center center;
+  background-position: left center;
   background-size: cover;
   background-repeat: no-repeat;
   filter: blur(5px);
@@ -41,16 +41,32 @@ const Contents = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
+  flex-direction: column;
+
+  ${(props) => props.theme.media.tablet`
+  flex-direction: row;
+  `}
 `;
 
 const ContentsInfo = styled.div`
-  flex: 3;
+  flex: 1;
+  width: 100%;
+
+  ${(props) => props.theme.media.tablet`
   width: 60%;
+  flex: 3;
+  `}
 `;
 
 const ContentImg = styled.div`
-  flex: 2;
+  flex: 1;
+  margin-bottom: 2rem;
+
+  ${(props) => props.theme.media.tablet`
+    margin-bottom: 0;
   margin-right: 2rem;
+  flex: 2;
+  `}
 `;
 
 const Cover = styled.img`

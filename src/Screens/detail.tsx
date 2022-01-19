@@ -138,7 +138,6 @@ const Detail: React.FC = () => {
   );
 
   // func
-  const onLoad = () => setImgLoading(false);
 
   return (
     <>
@@ -165,17 +164,16 @@ const Detail: React.FC = () => {
               <Contents>
                 <ContentImg>
                   <Cover
-                    src={
-                      imgLoading
-                        ? require("assets/spinner.svg").default
-                        : createImgPath(data.poster_path, "w500")
-                    }
+                    src={createImgPath(data.poster_path, "w500")}
                     alt={
                       isMovie
                         ? (data as MovieDetail).title
                         : (data as TvDetail).name
                     }
-                    onLoad={onLoad}
+                    onError={({ currentTarget }) => {
+                      currentTarget.onerror = null;
+                      currentTarget.src = "/images/ready.jpeg";
+                    }}
                   />
                 </ContentImg>
 

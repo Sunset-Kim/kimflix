@@ -60,13 +60,12 @@ const Poster = <ItemTypes extends IMovie | ITV | IPerson>({
     return (
       <>
         <Image
-          src={
-            loading
-              ? require("assets/spinner.svg").default
-              : createImgPath(Data.poster_path, "w300")
-          }
+          src={createImgPath(Data.poster_path, "w300")}
           alt={Data.title}
-          onLoad={() => setLoading(false)}
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null;
+            currentTarget.src = "/images/ready.jpeg";
+          }}
         />
         <InfoContainer variants={infoVariants}>
           <h3>{Data.title}</h3>

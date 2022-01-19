@@ -118,15 +118,13 @@ const Detail: React.FC = () => {
   const isMovie = location?.params.category === "movie" ? true : false;
   const id = Number(location?.params.id);
 
-  // state
-  const [imgLoading, setImgLoading] = useState(true);
-
   // # react-query
   // ## detail query
   const { isLoading, data, isError } = useQuery<MovieDetail | TvDetail>(
     isMovie ? ["movie", "detail", id] : ["tv", "detail", id],
     isMovie ? () => moviesApi.getMovie(id) : () => tvApi.getTv(id)
   );
+
   // ## similar query
   const {
     isLoading: similarLoading,

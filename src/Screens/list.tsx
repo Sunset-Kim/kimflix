@@ -4,7 +4,7 @@ import { tvApi, moviesApi, IGetTV, IGetMovie } from "services/api";
 import SlidePoster from "components/slide-poster";
 import { useMatch } from "react-router-dom";
 import { useInfiniteQuery } from "react-query";
-import { result, toLower, uniqBy, uniqueId } from "lodash";
+import { toLower, uniqBy } from "lodash";
 
 const Wrapper = styled.div`
   padding: 110px 20px 0;
